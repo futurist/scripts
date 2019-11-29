@@ -1,13 +1,13 @@
 #!/bin/bash
 
-MONGO_DATABASE="test3"
-APP_NAME="mongodb8080"
+MONGO_DATABASE=${1:-"test3"}
+APP_NAME=${2:-${1:-"mongodb8080"}}
 
 MONGO_HOST="127.0.0.1"
 MONGO_PORT="27017"
 TIMESTAMP=`date +%F-%H%M`
 MONGODUMP_PATH="/usr/bin/mongodump"
-BACKUPS_DIR="/home/admin2/backups/$APP_NAME"
+BACKUPS_DIR="${3:-"/home/admin/backups/"}$APP_NAME"
 BACKUP_NAME="$APP_NAME-$TIMESTAMP"
 #=====================================================================
 DAYSTORETAINBACKUP="15"
@@ -27,6 +27,7 @@ rm -rf $BACKUP_NAME
 find $BACKUPS_DIR -type f -mtime +$DAYSTORETAINBACKUP -exec rm {} +
 echo "--------------------------------------------"
 echo "Database backup complete!"
+#=====================================================================
 
-# FROM: https://gist.github.com/sheharyarn/0f04c1ba18462cddaaf5
-
+# crontab -e
+# */30 8-23 * * * /bin/bash /home/admin2/mongo_backup.sh
